@@ -23,7 +23,7 @@ fn int main() {
   io::printf("%f\n", x);
   io::printf("%d\n", vec.x == x);
 
-  assert(vec.x == vec.x);
+  assert(vec.x == x);
 
   
   // assert(vec.y == 0.267261);
