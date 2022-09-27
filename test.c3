@@ -1,29 +1,29 @@
 import vector;
 import std;
 
+fn double round(double value) {
+  return $$ceil(value * 100) / 100;
+}
 
 fn int main() {
-
 
   /*
   * Test Vec3
   */
 
-  Vec3 vec = Vec3{3, 1, 2};
+  Vec3 vec = Vec3{1.5, 2.6, 3.7};
 
-  assert(vec.x == 3);
-  assert(vec.y == 1);
-  assert(vec.z == 2);
+  double len = vec.len();
 
-  vec.normalize();
+  assert(round(len) == 4.770000);
+
+  Vec3 normal = vec.normalize();
 
   double x = 0.801784;
 
-  io::printf("%f\n", vec.x);
+  io::printf("%f\n", normal.x);
   io::printf("%f\n", x);
-  io::printf("%d\n", vec.x == x);
-
-  assert(vec.x == x);
+  io::printf("%d\n", normal.x == x);
 
   
   // assert(vec.y == 0.267261);
