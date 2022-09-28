@@ -60,10 +60,20 @@ fn Vec3 Vec3.cross(Vec3* first, Vec3* second)
 }
 
 fn double Vec3.len(Vec3* this) {
-    return $$sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
+    return $$sqrt(this.dot(this));
 }
 
 fn double Vec3.dot(Vec3* first, Vec3* second)
 {
-    return (first.x * second.x) + (first.z * second.y) + (first.z * second.z);
+    return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
+}
+
+fn Vec3 Vec3.add(Vec3* first, Vec3* second)
+{
+    return Vec3 {first.x + second.x, first.y + second.y, first.z + second.z};
+}
+
+fn Vec3 Vec3.subtract(Vec3* first, Vec3* second)
+{
+    return Vec3 {first.x - second.x, first.y - second.y, first.z - second.z};
 }

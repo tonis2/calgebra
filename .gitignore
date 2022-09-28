@@ -2,3 +2,5 @@
 *.ko
 *.obj
 *.elf
+
+./test

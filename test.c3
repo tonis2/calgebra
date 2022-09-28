@@ -7,27 +7,50 @@ fn double round(double value) {
 
 fn int main() {
 
-  /*
-  * Test Vec3
-  */
+  // Vec3 vec = Vec3{1.5, 2.6, 3.7};
 
+  // double len = vec.len();
+
+
+
+  // Vec3 normal = vec.normalize();
+
+  // double x = 0.801784;
+
+  // io::printf("%f\n", normal.x);
+  // io::printf("%f\n", x);
+  // io::printf("%d\n", normal.x == x);
+
+ // Magnitude
+
+ {
   Vec3 vec = Vec3{1.5, 2.6, 3.7};
-
   double len = vec.len();
-
   assert(round(len) == 4.770000);
+ }
 
-  Vec3 normal = vec.normalize();
 
-  double x = 0.801784;
+ // Adding
+ {
+   Vec3 vec1 = Vec3{5, 9, -10};
+   Vec3 vec2 = Vec3{17, -3, -2};
+   Vec3 total = vec1.add(&vec2);
+   assert(total.x == 22);
+   assert(total.y == 6);
+   assert(total.z == -12);
 
-  io::printf("%f\n", normal.x);
-  io::printf("%f\n", x);
-  io::printf("%d\n", normal.x == x);
+ }
 
-  
-  // assert(vec.y == 0.267261);
-  // assert(vec.z == 0.534522);
+
+  // Subtract
+ {
+   Vec3 vec1 = Vec3{18, 5, 3};
+   Vec3 vec2 = Vec3{10, 9, -10};
+   Vec3 total = vec1.subtract(&vec2);
+   assert(total.x == 8);
+   assert(total.y == -4);
+   assert(total.z == 13);
+ }
 
   return 0;
 }
