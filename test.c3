@@ -1,4 +1,7 @@
-import vector;
+import vec2;
+import vec3;
+import vec4;
+import mat4;
 import std;
 
 fn double round(double value) {
@@ -46,11 +49,21 @@ fn int main() {
  {
    Vec3 vec1 = Vec3{18, 5, 3};
    Vec3 vec2 = Vec3{10, 9, -10};
-   Vec3 total = vec1.subtract(&vec2);
+   Vec3 total = vec1.subtract(vec2);
    assert(total.x == 8);
    assert(total.y == -4);
    assert(total.z == 13);
  }
 
+ /*
+ * Matrix fuctions
+ */
+
+  Mat4x4 identity = mat4::identity();
+  Mat4x4 ortho = mat4::orthographic(0, 600, 0, 600, 0.1, 100);
+  Mat4x4 result = mat4::mul(identity, ortho);
+
+  io::printf("%d \n", result.data[3][2]);
+  
   return 0;
 }
