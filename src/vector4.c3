@@ -1,4 +1,4 @@
-module vec4;
+module calgebra::vec4;
 
 struct Vec4 {
     double x;

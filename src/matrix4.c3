@@ -1,6 +1,6 @@
-module mat4;
-import vec3;
-import vec4;
+module calgebra::mat4;
+import calgebra::vec3;
+import calgebra::vec4;
 import std::math;
 
 fn double toRadians(double value) {

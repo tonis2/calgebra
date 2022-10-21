@@ -1,7 +1,5 @@
-import vec2;
-import vec3;
-import vec4;
-import mat4;
+
+import calgebra;
 import std;
 
 fn double round(double value) {
