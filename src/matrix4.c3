@@ -46,7 +46,7 @@ fn Vec4 Mat4x4.mulByVec4(Mat4x4* this, Vec4 v) {
 }
 
 
-fn Mat4x4 Mat4x4.fromTranslate(Mat4x4* this, Vec3 axis) {
+fn Mat4x4 fromTranslate(Vec3 axis) {
     Mat4x4 result = identity();
     result.data[3][0] = axis.x;
     result.data[3][1] = axis.y;
@@ -117,7 +117,7 @@ fn Mat4x4 Mat4x4.lookAt(Mat4x4* this, Vec3 eye, Vec3 target, Vec3 up) {
 }
 
 
-fn Mat4x4 Mat4x4.fromRotation(Mat4x4* this, double angle_in_degrees, Vec3 axis) {
+fn Mat4x4 fromRotation(double angle_in_degrees, Vec3 axis) {
     Mat4x4 result = identity();
 
     Vec3 norm_axis = axis.normalize();
@@ -143,6 +143,56 @@ fn Mat4x4 Mat4x4.fromRotation(Mat4x4* this, double angle_in_degrees, Vec3 axis) 
     result.data[2][2] = (z * z * cos_value) + cos_theta;
 
     return result;
+}
+
+fn void Mat4x4.rotate(Mat4x4* this, double angle_in_degrees, Vec3 axis) {
+    Vec3 norm_axis = axis.normalize();
+
+    double sin_theta = $$sin(toRadians(angle_in_degrees));
+    double cos_theta = $$cos(toRadians(angle_in_degrees));
+    double cos_value = 1 - cos_theta;
+
+    double x = norm_axis.x;
+    double y = norm_axis.y;
+    double z = norm_axis.z;
+
+    this.data[0][0] = (x * x * cos_value) + cos_theta;
+    this.data[0][1] = (x * y * cos_value) + (z * sin_theta);
+    this.data[0][2] = (x * z * cos_value) - (y * sin_theta);
+
+    this.data[1][0] = (y * x * cos_value) - (z * sin_theta);
+    this.data[1][1] = (y * y * cos_value) + cos_theta;
+    this.data[1][2] = (y * z * cos_value) + (x * sin_theta);
+
+    this.data[2][0] = (z * x * cos_value) + (y * sin_theta);
+    this.data[2][1] = (z * y * cos_value) - (x * sin_theta);
+    this.data[2][2] = (z * z * cos_value) + cos_theta;
+}
+
+fn Mat4x4 rotateWith(Mat4x4 value, double angle_in_degrees, Vec3 axis) {
+    Vec3 norm_axis = axis.normalize();
+
+    double sin_theta = $$sin(toRadians(angle_in_degrees));
+    double cos_theta = $$cos(toRadians(angle_in_degrees));
+    double cos_value = 1 - cos_theta;
+
+    double x = norm_axis.x;
+    double y = norm_axis.y;
+    double z = norm_axis.z;
+
+    value.data[0][0] = (x * x * cos_value) + cos_theta;
+    value.data[0][1] = (x * y * cos_value) + (z * sin_theta);
+    value.data[0][2] = (x * z * cos_value) - (y * sin_theta);
+
+    value.data[1][0] = (y * x * cos_value) - (z * sin_theta);
+    value.data[1][1] = (y * y * cos_value) + cos_theta;
+    value.data[1][2] = (y * z * cos_value) + (x * sin_theta);
+
+    value.data[2][0] = (z * x * cos_value) + (y * sin_theta);
+    value.data[2][1] = (z * y * cos_value) - (x * sin_theta);
+    value.data[2][2] = (z * z * cos_value) + cos_theta;
+
+    return value;
 }
 
 
