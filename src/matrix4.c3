@@ -87,7 +87,7 @@ fn Mat4x4 orthographic(double left, double right, double bottom, double top, dou
 }
 
 
-fn Mat4x4 Mat4x4.lookAt(Mat4x4* this, Vec3 eye, Vec3 target, Vec3 up) {
+fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
     Vec3 f = Vec3.subtract(target, eye).normalize();
     Vec3 s = vec3::cross(f, up).normalize();
     Vec3 u = vec3::cross(s, f);
@@ -213,4 +213,9 @@ fn Mat4x4 mul(Mat4x4 left, Mat4x4 right) {
         }
 
         return result;
+}
+
+
+fn Mat4x4 Mat4x4.mul(Mat4x4 this, Mat4x4 right) {
+    return mul(this, right);
 }
