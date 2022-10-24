@@ -3,7 +3,7 @@ import calgebra::vec3;
 import calgebra::vec4;
 import calgebra;
 import std::math;
-// import std::io;
+import std::io;
 
 
 fn double toRadians(double value) {
@@ -53,6 +53,8 @@ fn bool Mat4x4.isEqual(Mat4x4 this, Mat4x4 other) {
     foreach (column, value: this.data) 
         {
             foreach (row, value2: this.data[column]) { 
+                // For debugging
+                // io::printf("first %d second %d\n", this.data[column][row], other.data[column][row]);
                 if (this.data[column][row] !=  other.data[column][row]) {
                     equal = false;
                 };
@@ -119,14 +121,14 @@ fn Mat4x4 orthographic(double left, double right, double bottom, double top, dou
 
 
 fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
-    Vec3 zAxis = Vec3.subtract(target, eye).normalize();
-    Vec3 xAxis = vec3::cross(zAxis, up).normalize();
-    Vec3 yAxis = vec3::cross(zAxis, xAxis).normalize();
+    Vec3 f = Vec3.subtract(target, eye).normalize();
+    Vec3 s = vec3::cross(f, up).normalize();
+    Vec3 u = vec3::cross(s, f);
 
     return Mat4x4{{ 
-                    { xAxis.x, xAxis.y, xAxis.z, 0},
-                    { yAxis.x, yAxis.y, yAxis.z, 0},
-                    { zAxis.x, zAxis.y, zAxis.z, 0},
+                    { s.x, s.y, s.z, 0},
+                    { u.x, u.y, u.z, 0},
+                    { -f.x, -f.y, -f.z, 0},
                     { eye.x, eye.y, eye.z, 1 }
                   }};
 }

@@ -94,6 +94,20 @@ fn int main() {
   }
 
 
+
+  {
+    Mat4x4 translate = mat4::lookAt(Vec3{0,0,-4}, Vec3{0,0,0}, Vec3{0,1,0});
+    Mat4x4 result = Mat4x4 {
+              {{ -1, 0, 0, 0 },
+               { 0, 1, 0, 0 },
+               { 0, 0, -1, 0 },
+               { 0, 0, -4, 1 }}
+            };
+
+    assert(result.isEqual(translate)); 
+  }
+
+
   
   return 0;
 }
