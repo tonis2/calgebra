@@ -75,7 +75,6 @@ fn Mat4x4 Mat4x4.translate(Mat4x4 this, Vec3 axis) {
     return this.mul(translate);
 }
 
-
 fn Mat4x4 projection(double width, double height, double depth) {
     return Mat4x4{
         {
@@ -93,15 +92,14 @@ fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double near, 
 
     double f = calgebra::tan(math::PI * 0.5 - 0.5 * toRadians(fovy_in_degrees));
     double range_inv = 1.0 / (near - far);
-
-    result.data[0][0] = f / aspect_ratio;
-    result.data[1][1] = f;
-    result.data[2][2] = (near + far) * range_inv;    
-    result.data[2][3] = -1;
-    result.data[3][2] = 2 * far * near * range_inv;
-    result.data[3][3] = 0;
-
-    return result;
+    return Mat4x4 {
+        {
+            { f / aspect_ratio, 0, 0, 0 },
+            { 0, f, 0, 0 },
+            { 0, 0, (near + far) * range_inv, -1 },
+            { 0, 0, near * far * range_inv * 2, 0 },
+        }
+    };
 }
 
 fn Mat4x4 orthographic(double left, double right, double bottom, double top, double z_near, double z_far) {
