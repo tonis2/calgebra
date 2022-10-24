@@ -1,8 +1,8 @@
 module calgebra::vec4;
 
 struct Vec4 {
-    double x;
-    double y;
-    double z;
-    double w;
+    float x;
+    float y;
+    float z;
+    float w;
 }

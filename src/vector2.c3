@@ -1,14 +1,14 @@
 module calgebra::vec2;
 
 struct Vec2 {
-    double x;
-    double y;
+    float x;
+    float y;
 }
 
 
-fn double[2] Vec2.toArray(Vec2* this)
+fn float[2] Vec2.toArray(Vec2* this)
 {
-    return double[2]{this.x, this.y};
+    return float[2]{this.x, this.y};
 }
 
 
@@ -34,26 +34,26 @@ fn Vec2 Vec2.divide(Vec2* first, Vec2* second)
 }
 
 
-fn double Vec2.dot(Vec2* first, Vec2* second)
+fn float Vec2.dot(Vec2* first, Vec2* second)
 {
     return (first.x * second.x) + (first.y * second.y);
 }
 
 fn Vec2 Vec2.normalize(Vec2* this)
 {
-    double magnitude = this.len();
+    float magnitude = this.len();
    
-    double x = this.x / magnitude;
-    double y = this.y / magnitude;
+    float x = this.x / magnitude;
+    float y = this.y / magnitude;
 
     return Vec2 {x, y };
 }
 
-fn double Vec2.len(Vec2* this) {
+fn float Vec2.len(Vec2* this) {
     return $$sqrt(this.dot(this));
 }
 
-fn double Vec2.distance(Vec2* this, Vec2 target) {
+fn float Vec2.distance(Vec2* this, Vec2 target) {
     return $$sqrt((this.x - this.y) * (this.x - this.y) + (target.x - target.y) * (target.x - target.y));
 }
 

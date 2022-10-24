@@ -5,17 +5,17 @@ import calgebra;
 import std::math;
 import std::io;
 
-fn double round(double value) {
+fn float round(float value) {
   return $$ceil(value * 100) / 100;
 }
 
 
-fn double toRadians(double value) {
+fn float toRadians(float value) {
     return value * math::PI / 180;
 }
 
 struct Mat4x4 {
-    double[4][4] data;
+    float[4][4] data;
 }
 
 fn Mat4x4 identity() {
@@ -42,10 +42,10 @@ fn Mat4x4 zero() {
 
 
 fn Vec4 Mat4x4.mulByVec4(Mat4x4* this, Vec4 v) {
-   double x = (this.data[0][0] * v.x) + (this.data[1][0] * v.y) + (this.data[2][0] * v.z) + (this.data[3][0] * v.w);
-   double y = (this.data[0][1] * v.x) + (this.data[1][1] * v.y) + (this.data[2][1] * v.z) + (this.data[3][1] * v.w);
-   double z = (this.data[0][2] * v.x) + (this.data[1][2] * v.y) + (this.data[2][2] * v.z) + (this.data[3][2] * v.w);
-   double w = (this.data[0][3] * v.x) + (this.data[1][3] * v.y) + (this.data[2][3] * v.z) + (this.data[3][3] * v.w);
+   float x = (this.data[0][0] * v.x) + (this.data[1][0] * v.y) + (this.data[2][0] * v.z) + (this.data[3][0] * v.w);
+   float y = (this.data[0][1] * v.x) + (this.data[1][1] * v.y) + (this.data[2][1] * v.z) + (this.data[3][1] * v.w);
+   float z = (this.data[0][2] * v.x) + (this.data[1][2] * v.y) + (this.data[2][2] * v.z) + (this.data[3][2] * v.w);
+   float w = (this.data[0][3] * v.x) + (this.data[1][3] * v.y) + (this.data[2][3] * v.z) + (this.data[3][3] * v.w);
 
    return Vec4 { x, y, z, w};
 }
@@ -81,7 +81,7 @@ fn Mat4x4 Mat4x4.translate(Mat4x4 this, Vec3 axis) {
     return this.mul(translate);
 }
 
-fn Mat4x4 projection(double width, double height, double depth) {
+fn Mat4x4 projection(float width, float height, float depth) {
     return Mat4x4{
         {
             { 2 / width, 0, 0, 0 },
@@ -93,10 +93,10 @@ fn Mat4x4 projection(double width, double height, double depth) {
 }
 
 
-fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double near, double far) {
+fn Mat4x4 perspective(float fovy_in_degrees, float aspect_ratio, float near, float far) {
     Mat4x4 result = identity();
 
-    double f = 1 / calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
+    float f = 1 / (float)calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
 
     return Mat4x4 {
         {
@@ -108,7 +108,7 @@ fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double near, 
     };
 }
 
-fn Mat4x4 orthographic(double left, double right, double bottom, double top, double z_near, double z_far) {
+fn Mat4x4 orthographic(float left, float right, float bottom, float top, float z_near, float z_far) {
     Mat4x4 result = zero();
 
     result.data[0][0] = 2 / (right - left);
@@ -138,18 +138,18 @@ fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
 }
 
 
-fn Mat4x4 fromRotation(double angle_in_degrees, Vec3 axis) {
+fn Mat4x4 fromRotation(float angle_in_degrees, Vec3 axis) {
     Mat4x4 result = identity();
 
     Vec3 norm_axis = axis.normalize();
 
-    double sin_theta = $$sin(toRadians(angle_in_degrees));
-    double cos_theta = $$cos(toRadians(angle_in_degrees));
-    double cos_value = 1 - cos_theta;
+    float sin_theta = $$sin(toRadians(angle_in_degrees));
+    float cos_theta = $$cos(toRadians(angle_in_degrees));
+    float cos_value = 1 - cos_theta;
 
-    double x = norm_axis.x;
-    double y = norm_axis.y;
-    double z = norm_axis.z;
+    float x = norm_axis.x;
+    float y = norm_axis.y;
+    float z = norm_axis.z;
 
     result.data[0][0] = (x * x * cos_value) + cos_theta;
     result.data[0][1] = (x * y * cos_value) + (z * sin_theta);
@@ -166,16 +166,16 @@ fn Mat4x4 fromRotation(double angle_in_degrees, Vec3 axis) {
     return result;
 }
 
-fn void Mat4x4.rotate(Mat4x4* this, double angle_in_degrees, Vec3 axis) {
+fn void Mat4x4.rotate(Mat4x4* this, float angle_in_degrees, Vec3 axis) {
     Vec3 norm_axis = axis.normalize();
 
-    double sin_theta = $$sin(toRadians(angle_in_degrees));
-    double cos_theta = $$cos(toRadians(angle_in_degrees));
-    double cos_value = 1 - cos_theta;
+    float sin_theta = $$sin(toRadians(angle_in_degrees));
+    float cos_theta = $$cos(toRadians(angle_in_degrees));
+    float cos_value = 1 - cos_theta;
 
-    double x = norm_axis.x;
-    double y = norm_axis.y;
-    double z = norm_axis.z;
+    float x = norm_axis.x;
+    float y = norm_axis.y;
+    float z = norm_axis.z;
 
     this.data[0][0] = (x * x * cos_value) + cos_theta;
     this.data[0][1] = (x * y * cos_value) + (z * sin_theta);
@@ -190,16 +190,16 @@ fn void Mat4x4.rotate(Mat4x4* this, double angle_in_degrees, Vec3 axis) {
     this.data[2][2] = (z * z * cos_value) + cos_theta;
 }
 
-fn Mat4x4 rotateWith(Mat4x4 value, double angle_in_degrees, Vec3 axis) {
+fn Mat4x4 rotateWith(Mat4x4 value, float angle_in_degrees, Vec3 axis) {
     Vec3 norm_axis = axis.normalize();
 
-    double sin_theta = $$sin(toRadians(angle_in_degrees));
-    double cos_theta = $$cos(toRadians(angle_in_degrees));
-    double cos_value = 1 - cos_theta;
+    float sin_theta = $$sin(toRadians(angle_in_degrees));
+    float cos_theta = $$cos(toRadians(angle_in_degrees));
+    float cos_value = 1 - cos_theta;
 
-    double x = norm_axis.x;
-    double y = norm_axis.y;
-    double z = norm_axis.z;
+    float x = norm_axis.x;
+    float y = norm_axis.y;
+    float z = norm_axis.z;
 
     value.data[0][0] = (x * x * cos_value) + cos_theta;
     value.data[0][1] = (x * y * cos_value) + (z * sin_theta);
@@ -223,7 +223,7 @@ fn Mat4x4 mul(Mat4x4 left, Mat4x4 right) {
         foreach (column, value: result.data) 
         {
             foreach (row, value2: result.data[column]) {
-                double sum = 0;
+                float sum = 0;
 
                 foreach (left_column, value3: left.data) {
                     sum += left.data[left_column][row] * right.data[column][left_column];   
