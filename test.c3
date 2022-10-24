@@ -51,7 +51,7 @@ fn int main() {
  }
 
  /*
- * Matrix fuctions
+ * Matrix functions
  */
 
   {
@@ -80,7 +80,6 @@ fn int main() {
     assert(result.isEqual(translate)); 
   }
 
-
   {
     Mat4x4 translate = mat4::fromTranslate(Vec3{2,3,2}).translate(Vec3{2, 3, 4});
     Mat4x4 result = Mat4x4 {
@@ -93,8 +92,6 @@ fn int main() {
     assert(result.isEqual(translate)); 
   }
 
-
-
   {
     Mat4x4 translate = mat4::lookAt(Vec3{0,0,-4}, Vec3{0,0,0}, Vec3{0,1,0});
     Mat4x4 result = Mat4x4 {
@@ -102,6 +99,18 @@ fn int main() {
                { 0, 1, 0, 0 },
                { 0, 0, -1, 0 },
                { 0, 0, -4, 1 }}
+            };
+
+    assert(result.isEqual(translate)); 
+  }
+
+  {
+    Mat4x4 translate = mat4::perspective(45, 1.75, 0.1, 1000);
+    Mat4x4 result = Mat4x4 {
+              {{ 1.379551, 0, 0, 0 },
+               { 0, 2.414214, 0, 0 },
+               { 0, 0, -1.000200, -1 },
+               { 0, 0, -0.200020, 0 }}
             };
 
     assert(result.isEqual(translate)); 

@@ -5,6 +5,10 @@ import calgebra;
 import std::math;
 import std::io;
 
+fn double round(double value) {
+  return $$ceil(value * 100) / 100;
+}
+
 
 fn double toRadians(double value) {
     return value * math::PI / 180;
@@ -54,8 +58,8 @@ fn bool Mat4x4.isEqual(Mat4x4 this, Mat4x4 other) {
         {
             foreach (row, value2: this.data[column]) { 
                 // For debugging
-                // io::printf("first %d second %d\n", this.data[column][row], other.data[column][row]);
-                if (this.data[column][row] !=  other.data[column][row]) {
+                // io::printf("Col: %d, Row: %d, first %f second %f\n", column + 1, row + 1, this.data[column][row], other.data[column][row]);
+                if (round(this.data[column][row]) !=  round(other.data[column][row])) {
                     equal = false;
                 };
             }
@@ -92,14 +96,14 @@ fn Mat4x4 projection(double width, double height, double depth) {
 fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double near, double far) {
     Mat4x4 result = identity();
 
-    double f = calgebra::tan(math::PI * 0.5 - 0.5 * toRadians(fovy_in_degrees));
-    double range_inv = 1.0 / (near - far);
+    double f = 1 / calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
+
     return Mat4x4 {
         {
             { f / aspect_ratio, 0, 0, 0 },
             { 0, f, 0, 0 },
-            { 0, 0, (near + far) * range_inv, -1 },
-            { 0, 0, near * far * range_inv * 2, 0 },
+            { 0, 0, (near + far) / (near - far), -1 },
+            { 0, 0, 2 * far * near / (near - far), 0 },
         }
     };
 }
