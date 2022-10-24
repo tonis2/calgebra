@@ -20,12 +20,15 @@ fn Vec3 up()
 fn Vec3 Vec3.normalize(Vec3* this)
 {
     double magnitude = this.len();
-   
-    double x = this.x / magnitude;
-    double y = this.y / magnitude;
-    double z = this.z / magnitude;
 
-    return Vec3 {x, y, z};
+    if (magnitude > 0.00001) {
+        double x = this.x / magnitude;
+        double y = this.y / magnitude;
+        double z = this.z / magnitude;
+        return Vec3 {x, y, z};
+    } else {
+        return Vec3{ 0, 0, 0 };
+    }
 }
 
 fn Vec3 zero()

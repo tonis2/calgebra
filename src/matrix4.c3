@@ -76,16 +76,29 @@ fn Mat4x4 Mat4x4.translate(Mat4x4 this, Vec3 axis) {
 }
 
 
-fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double z_near, double z_far) {
+fn Mat4x4 projection(double width, double height, double depth) {
+    return Mat4x4{
+        {
+            { 2 / width, 0, 0, 0 },
+            { 0, -2 / height, 0, 0 },
+            { 0, 0, 2 / depth, 0 },
+            { -1, 1, 0, 1 },
+        }
+    };
+}
+
+
+fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double near, double far) {
     Mat4x4 result = identity();
 
-    double f = 1 / calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
+    double f = calgebra::tan(math::PI * 0.5 - 0.5 * toRadians(fovy_in_degrees));
+    double range_inv = 1.0 / (near - far);
 
     result.data[0][0] = f / aspect_ratio;
     result.data[1][1] = f;
-    result.data[2][2] = (z_near + z_far) / (z_near - z_far);
+    result.data[2][2] = (near + far) * range_inv;    
     result.data[2][3] = -1;
-    result.data[3][2] = 2 * z_far * z_near / (z_near - z_far);
+    result.data[3][2] = 2 * far * near * range_inv;
     result.data[3][3] = 0;
 
     return result;
@@ -108,32 +121,16 @@ fn Mat4x4 orthographic(double left, double right, double bottom, double top, dou
 
 
 fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
-    Vec3 f = Vec3.subtract(target, eye).normalize();
-    Vec3 s = vec3::cross(f, up).normalize();
-    Vec3 u = vec3::cross(s, f);
+    Vec3 zAxis = Vec3.subtract(target, eye).normalize();
+    Vec3 xAxis = vec3::cross(zAxis, up).normalize();
+    Vec3 yAxis = vec3::cross(zAxis, xAxis).normalize();
 
-    Mat4x4 result;
-    result.data[0][0] = s.x;
-    result.data[0][1] = u.x;
-    result.data[0][2] = -f.x;
-    result.data[0][3] = 0;
-
-    result.data[1][0] = s.y;
-    result.data[1][1] = u.y;
-    result.data[1][2] = -f.y;
-    result.data[1][3] = 0;
-
-    result.data[2][0] = s.z;
-    result.data[2][1] = u.z;
-    result.data[2][2] = -f.z;
-    result.data[2][3] = 0;
-
-    result.data[3][0] = -vec3::dot(s, eye);
-    result.data[3][1] = -vec3::dot(u, eye);
-    result.data[3][2] = vec3::dot(f, eye);
-    result.data[3][3] = 1;
-
-    return result;
+    return Mat4x4{{ 
+                    { xAxis.x, xAxis.y, xAxis.z, 0},
+                    { yAxis.x, yAxis.y, yAxis.z, 0},
+                    { zAxis.x, zAxis.y, zAxis.z, 0},
+                    { eye.x, eye.y, eye.z, 1 }
+                  }};
 }
 
 
