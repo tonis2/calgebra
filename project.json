@@ -1,0 +1,15 @@
+{
+    "langrev": "1",
+    "warnings": [ "no-unused" ],
+    "dependencies": [],
+    "authors": ["Tonis"],
+    "version": "0.1.0",
+    "sources": [ "./src/**" ],
+    "targets": {
+      "test": {
+        "type": "executable",
+        "sources-add": ["./test.c3"]
+      }
+    },
+    "output": "./build"
+  }

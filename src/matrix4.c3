@@ -1,14 +1,15 @@
 module calgebra::mat4;
 import calgebra::vec3;
 import calgebra::vec4;
+import calgebra;
 import std::math;
+// import std::io;
+
 
 fn double toRadians(double value) {
     return value * math::PI / 180;
 }
 
-macro tan(x) = $$sin(x) / $$cos(x);
- 
 struct Mat4x4 {
     double[4][4] data;
 }
@@ -46,6 +47,20 @@ fn Vec4 Mat4x4.mulByVec4(Mat4x4* this, Vec4 v) {
 }
 
 
+fn bool Mat4x4.isEqual(Mat4x4 this, Mat4x4 other) {
+    bool equal = true;
+
+    foreach (column, value: this.data) 
+        {
+            foreach (row, value2: this.data[column]) { 
+                if (this.data[column][row] !=  other.data[column][row]) {
+                    equal = false;
+                };
+            }
+        }
+    return equal;
+}
+
 fn Mat4x4 fromTranslate(Vec3 axis) {
     Mat4x4 result = identity();
     result.data[3][0] = axis.x;
@@ -55,11 +70,16 @@ fn Mat4x4 fromTranslate(Vec3 axis) {
     return result;
 }
 
+fn Mat4x4 Mat4x4.translate(Mat4x4 this, Vec3 axis) {
+    Mat4x4 translate = fromTranslate(axis);
+    return this.mul(translate);
+}
+
 
 fn Mat4x4 perspective(double fovy_in_degrees, double aspect_ratio, double z_near, double z_far) {
     Mat4x4 result = identity();
 
-    double f = 1 / tan(toRadians(fovy_in_degrees) * 0.5);
+    double f = 1 / calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
 
     result.data[0][0] = f / aspect_ratio;
     result.data[1][1] = f;

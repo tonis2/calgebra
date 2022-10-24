@@ -11,9 +11,6 @@ fn int main() {
   // Vec3 vec = Vec3{1.5, 2.6, 3.7};
 
   // double len = vec.len();
-
-
-
   // Vec3 normal = vec.normalize();
 
   // double x = 0.801784;
@@ -57,11 +54,46 @@ fn int main() {
  * Matrix fuctions
  */
 
-  Mat4x4 identity = mat4::identity();
-  Mat4x4 ortho = mat4::orthographic(0, 600, 0, 600, 0.1, 100);
-  Mat4x4 result = mat4::mul(identity, ortho);
+  {
+    Mat4x4 identity = mat4::identity();
+    Mat4x4 result = Mat4x4 { 
+        {
+            { 1, 0, 0, 0 },
+            { 0, 1, 0, 0 },
+            { 0, 0, 1, 0 },
+            { 0, 0, 0, 1 },
+        }
+        };
 
-  io::printf("%d \n", result.data[3][2]);
+    assert(result.isEqual(identity)); 
+  }
+
+  {
+    Mat4x4 translate = mat4::fromTranslate(Vec3{2,3,4});
+    Mat4x4 result = Mat4x4 { 
+              {{ 1, 0, 0, 0 },
+               { 0, 1, 0, 0 },
+               { 0, 0, 1, 0 },
+               { 2, 3, 4, 1 }}
+            };
+
+    assert(result.isEqual(translate)); 
+  }
+
+
+  {
+    Mat4x4 translate = mat4::fromTranslate(Vec3{2,3,2}).translate(Vec3{2, 3, 4});
+    Mat4x4 result = Mat4x4 {
+              {{ 1, 0, 0, 0 },
+               { 0, 1, 0, 0 },
+               { 0, 0, 1, 0 },
+               { 4, 6, 6, 1 }}
+            };
+
+    assert(result.isEqual(translate)); 
+  }
+
+
   
   return 0;
 }
