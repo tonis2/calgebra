@@ -94,16 +94,16 @@ fn Mat4x4 projection(float width, float height, float depth) {
 
 
 fn Mat4x4 perspective(float fovy_in_degrees, float aspect_ratio, float near, float far) {
-    Mat4x4 result = identity();
+    float f = (float)calgebra::tan(math::PI * 0.5 - 0.5 * toRadians(fovy_in_degrees));
 
-    float f = 1 / (float)calgebra::tan(toRadians(fovy_in_degrees) * 0.5);
+    float range_inv = (float)(1.0 / (double)(near - far));
 
     return Mat4x4 {
         {
             { f / aspect_ratio, 0, 0, 0 },
             { 0, f, 0, 0 },
-            { 0, 0, (near + far) / (near - far), -1 },
-            { 0, 0, 2 * far * near / (near - far), 0 },
+            { 0, 0, (near + far) * range_inv, -1 },
+            { 0, 0, far * near * range_inv  * 2, 0 },
         }
     };
 }
