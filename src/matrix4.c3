@@ -124,16 +124,16 @@ fn Mat4x4 orthographic(float left, float right, float bottom, float top, float z
 }
 
 
-fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
-    Vec3 f = Vec3.subtract(target, eye).normalize();
-    Vec3 s = vec3::cross(f, up).normalize();
-    Vec3 u = vec3::cross(s, f);
+fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 upDir) {
+    Vec3 forward = vec3::subtract(target, eye).normalize();
+    Vec3 left = vec3::cross(forward, upDir).normalize();
+    Vec3 up = vec3::cross(forward, left);
 
     return Mat4x4{{ 
-                    { s.x, s.y, s.z, 0},
-                    { u.x, u.y, u.z, 0},
-                    { -f.x, -f.y, -f.z, 0},
-                    { eye.x, eye.y, eye.z, 1 }
+                    { left.x, up.x, forward.x, 0},
+                    { left.y, up.y, forward.y, 0},
+                    { left.z, up.z, forward.z, 0},
+                    { -vec3::dot(left, eye), -vec3::dot(up, eye), -vec3::dot(forward, eye), 1 }
                   }};
 }
 
