@@ -94,7 +94,7 @@ fn Mat4x4 projection(float width, float height, float depth) {
 
 
 fn Mat4x4 perspective(float fovy_in_degrees, float aspect_ratio, float near, float far) {
-    float f = (float)calgebra::tan(math::PI * 0.5 - 0.5 * toRadians(fovy_in_degrees));
+    float f = 1.0 / (float)calgebra::tan(toRadians(fovy_in_degrees) / 2);
 
     float range_inv = (float)(1.0 / (double)(near - far));
 
@@ -108,19 +108,19 @@ fn Mat4x4 perspective(float fovy_in_degrees, float aspect_ratio, float near, flo
     };
 }
 
-fn Mat4x4 orthographic(float left, float right, float bottom, float top, float z_near, float z_far) {
-    Mat4x4 result = zero();
+fn Mat4x4 orthographic(float left, float right, float bottom, float top, float near, float far) {
+    float lr =  1 / (left - right);
+    float bt =  1 / (bottom - top);
+    float nf =  1 / (near - far);
 
-    result.data[0][0] = 2 / (right - left);
-    result.data[1][1] = 2 / (top - bottom);
-    result.data[2][2] = 2 / (z_near - z_far);
-    result.data[3][3] = 1;
-
-    result.data[3][0] = (left + right) / (left - right);
-    result.data[3][1] = (bottom + top) / (bottom - top);
-    result.data[3][2] = (z_far + z_near) / (z_near - z_far);
-
-    return result;
+    return Mat4x4 {
+        {
+            { -2 * lr, 0, 0, 0 },
+            { 0, -2 * bt, 0, 0 },
+            { 0, 0, 2 * nf, 0 },
+            { (left + right) * lr, (top + bottom) * bt, (far + near) * nf, 0 },
+        }
+    };
 }
 
 
@@ -188,6 +188,15 @@ fn void Mat4x4.rotate(Mat4x4* this, float angle_in_degrees, Vec3 axis) {
     this.data[2][0] = (z * x * cos_value) + (y * sin_theta);
     this.data[2][1] = (z * y * cos_value) - (x * sin_theta);
     this.data[2][2] = (z * z * cos_value) + cos_theta;
+}
+
+
+fn Mat4x4 fromScale(Vec3 scale) {
+   Mat4x4 result = identity();
+   result.data[0][0] = scale.x;
+   result.data[1][1] = scale.y;
+   result.data[2][2] = scale.z;
+   return result;
 }
 
 fn Mat4x4 rotateWith(Mat4x4 value, float angle_in_degrees, Vec3 axis) {
