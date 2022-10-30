@@ -133,12 +133,12 @@ fn Mat4x4 lookAt(Vec3 eye, Vec3 target, Vec3 upDir) {
                     { left.x, up.x, forward.x, 0},
                     { left.y, up.y, forward.y, 0},
                     { left.z, up.z, forward.z, 0},
-                    { vec3::dot(left, eye), vec3::dot(up, eye), vec3::dot(forward, eye), 1 }
+                    { -vec3::dot(left, eye), -vec3::dot(up, eye), vec3::dot(forward, eye), 1 }
                   }};
 }
 
 
-fn Mat4x4 fromRotation(float angle_in_degrees, Vec3 axis) {
+fn Mat4x4 fromRotate(float angle_in_degrees, Vec3 axis) {
     Mat4x4 result = identity();
 
     Vec3 norm_axis = axis.normalize();

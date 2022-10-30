@@ -6,7 +6,6 @@ struct Vec3 {
     float z;
 }
 
-
 fn float[3] Vec3.toArray(Vec3* this)
 {
     return float[3]{this.x, this.y, this.z};
