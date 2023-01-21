@@ -11,7 +11,7 @@ fn float round(float value) {
 
 
 fn float toRadians(float value) {
-    return value * math::PI / 180;
+    return value * (float)math::PI / 180;
 }
 
 struct Mat4x4 {
