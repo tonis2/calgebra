@@ -4,4 +4,4 @@ import calgebra::vec3;
 import calgebra::vec4;
 import calgebra::mat4;
 
-macro tan(x) = $$sin(x) / $$cos(x);
+macro tan(x) => $$sin(x) / $$cos(x);
