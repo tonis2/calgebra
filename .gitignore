@@ -2,5 +2,5 @@
 *.ko
 *.obj
 *.elf
-
+build/*
 ./test

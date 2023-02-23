@@ -1,9 +1,9 @@
 {
 	"provides": "calgebra",
-	"sources": ["./src/*"],
 	"targets": {
 		"macos-x64": {},
 		"linux-x64": {},
 		"windows-x64": {}
 	}
 }
+
